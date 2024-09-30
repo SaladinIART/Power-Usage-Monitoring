@@ -1,10 +1,5 @@
 import minimalmodbus
-import time
-import csv
-import os
-from datetime import datetime
-from pyexcel_ods3 import save_data, get_data
-from collections import OrderedDict
+import struct
 
 class RX380:
     def __init__(self, port='/dev/ttyUSB0', slave_address=1):
@@ -78,77 +73,3 @@ class RX380:
         except Exception as e:
             print(f"Error reading data: {e}")
             return None
-
-def get_filename(extension):
-    today = datetime.now().strftime("%Y-%m-%d")
-    return f"rx380_data_{today}.{extension}"
-
-def save_to_csv(data, folder_path="~/Desktop/PUA_Office/PUA/rx380_log_daily"):
-    folder_path = os.path.expanduser(folder_path)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    
-    filename = os.path.join(folder_path, get_filename("csv"))
-    file_exists = os.path.isfile(filename)
-    
-    with open(filename, 'a', newline='') as csvfile:
-        fieldnames = ['timestamp'] + list(data.keys())
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        
-        if not file_exists:
-            writer.writeheader()
-        
-        row_data = {'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-        row_data.update(data)
-        writer.writerow(row_data)
-
-def save_to_ods(data, folder_path="~/Desktop/PUA_Office/PUA/rx380_log_daily"):
-    folder_path = os.path.expanduser(folder_path)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    
-    filename = os.path.join(folder_path, get_filename("ods"))
-    
-    if os.path.exists(filename):
-        sheet_data = get_data(filename)
-        sheet = sheet_data["Sheet1"]
-    else:
-        sheet = [['timestamp'] + list(data.keys())]
-    
-    row_data = [datetime.now().strftime("%Y-%m-%d %H:%M:%S")] + list(data.values())
-    sheet.append(row_data)
-    
-    save_data(filename, OrderedDict([("Sheet1", sheet)]))
-
-def main():
-    rx380 = RX380(slave_address=1)
-    
-    try:
-        while True:
-            data = rx380.read_data()
-            if data:
-                print("\nRX380 Readings:")
-                print(f"Phase Voltage (V): L1={data['voltage_l1']:.1f}, L2={data['voltage_l2']:.1f}, L3={data['voltage_l3']:.1f}")
-                print(f"Line Voltage (V): L12={data['voltage_l12']:.1f}, L23={data['voltage_l23']:.1f}, L31={data['voltage_l31']:.1f}")
-                print(f"Max Line Voltage (V): L12={data['voltage_l12_max']:.1f}, L23={data['voltage_l23_max']:.1f}, L31={data['voltage_l31_max']:.1f}")
-                print(f"Min Line Voltage (V): L12={data['voltage_l12_min']:.1f}, L23={data['voltage_l23_min']:.1f}, L31={data['voltage_l31_min']:.1f}")
-                print(f"Current (A): L1={data['current_l1']:.2f}, L2={data['current_l2']:.2f}, L3={data['current_l3']:.2f}, LN={data['current_ln']:.2f}")
-                print(f"Total Real Power: {data['total_real_power']} W")
-                print(f"Total Apparent Power: {data['total_apparent_power']} VA")
-                print(f"Total Reactive Power: {data['total_reactive_power']} VAR")
-                print(f"Total Power Factor: {data['total_power_factor']:.3f}")
-                print(f"Frequency: {data['frequency']:.2f} Hz")
-                print(f"Total Real Energy: {data['total_real_energy']} kWh")
-                print(f"Total Reactive Energy: {data['total_reactive_energy']} kVARh")
-                print(f"Total Apparent Energy: {data['total_apparent_energy']} kVAh")
-                
-                # Save data to CSV and ODS
-                save_to_csv(data)
-                save_to_ods(data)
-            
-            time.sleep(5)  # Read every 5 seconds
-    except KeyboardInterrupt:
-        print("Program stopped by user")
-
-if __name__ == "__main__":
-    main()
