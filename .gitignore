@@ -1,0 +1,32 @@
+# Test files
+Rx380_Data_csv.py
+Rx380_watchdog.py
+rx380_watchdog_v1.1.py
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Data files (if you don't want to track them)
+*.csv
+*.ods
+
+# Backup files
+*.bak
