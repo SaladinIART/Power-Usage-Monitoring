@@ -184,6 +184,8 @@ def main():
     input_thread.daemon = True
     input_thread.start()
     
+    last_save_time = time.time()
+    
     try:
         while not killer.kill_now:
             if not killer.pause:
@@ -191,8 +193,12 @@ def main():
                     data = rx380.read_data()
                     if data:
                         logging.info("Data read successfully")
-                        save_to_csv(data)
-                        save_to_ods(data)
+                        
+                        current_time = time.time()
+                        if current_time - last_save_time >= 10:  # Save every 10 seconds
+                            save_to_csv(data)
+                            save_to_ods(data)
+                            last_save_time = current_time
                         
                         # Display output on terminal
                         print("\nRX380 Readings:")
@@ -210,7 +216,11 @@ def main():
                     logging.error(f"Error in main loop: {e}")
                     print(f"Error: {e}")
             
-            time.sleep(5)  # Read every 5 seconds
+            # Short sleep to allow for responsive input handling
+            for _ in range(5):  # 5 * 0.2 seconds = 1 second total
+                if killer.kill_now:
+                    break
+                time.sleep(0.2)
     except Exception as e:
         logging.critical(f"Critical error in main function: {e}")
         print(f"Critical error: {e}")
