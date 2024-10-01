@@ -1,3 +1,9 @@
 minimalmodbus==1.0.2
 pyexcel-ods3==0.6.0
 pyserial==3.5
+# Additional requirements based on imports
+pandas==1.3.5  # For data manipulation (if needed)
+numpy==1.21.5  # Dependency for pandas
+openpyxl==3.0.9  # For Excel file support (used by pyexcel-ods3)
+odfpy==1.4.1  # For ODS file support (used by pyexcel-ods3)
+lxml==4.6.3  # XML library (dependency for odfpy)

@@ -1,5 +1,6 @@
 import minimalmodbus
 import struct
+import logging
 
 class RX380:
     def __init__(self, port='/dev/ttyUSB0', slave_address=1):
@@ -12,19 +13,35 @@ class RX380:
         self.instrument.mode = minimalmodbus.MODE_RTU
 
     def read_scaled_value(self, register_address, scale_factor):
-        raw_value = self.instrument.read_registers(register_address, 2, functioncode=4)
-        value = (raw_value[0] << 16 | raw_value[1]) * scale_factor
-        return value
+        try:
+            raw_value = self.instrument.read_registers(register_address, 2, functioncode=4)
+            value = (raw_value[0] << 16 | raw_value[1]) * scale_factor
+            return value
+        except Exception as e:
+            logging.error(f"Error reading scaled value from register {register_address}: {e}")
+            return None
 
     def read_float(self, register_address, number_of_registers=2):
-        raw_value = self.instrument.read_long(register_address, functioncode=4)
-        return struct.unpack('>f', struct.pack('>I', raw_value))[0]
+        try:
+            raw_value = self.instrument.read_long(register_address, functioncode=4)
+            return struct.unpack('>f', struct.pack('>I', raw_value))[0]
+        except Exception as e:
+            logging.error(f"Error reading float from register {register_address}: {e}")
+            return None
 
     def read_long(self, register_address):
-        return self.instrument.read_long(register_address, functioncode=4, signed=True)
+        try:
+            return self.instrument.read_long(register_address, functioncode=4, signed=True)
+        except Exception as e:
+            logging.error(f"Error reading long from register {register_address}: {e}")
+            return None
 
     def read_unsigned_long(self, register_address):
-        return self.instrument.read_long(register_address, functioncode=4, signed=False)
+        try:
+            return self.instrument.read_long(register_address, functioncode=4, signed=False)
+        except Exception as e:
+            logging.error(f"Error reading unsigned long from register {register_address}: {e}")
+            return None
 
     def read_data(self):
         data = {}
@@ -71,5 +88,5 @@ class RX380:
 
             return data
         except Exception as e:
-            print(f"Error reading data: {e}")
+            logging.error(f"Error reading data: {e}")
             return None
