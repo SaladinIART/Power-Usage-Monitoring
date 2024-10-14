@@ -1,12 +1,21 @@
-FROM arm64v8/python:3.11-slim-buster
+# Use Python 3.11.2 slim image as the base
+FROM python:3.11.2-slim
 
-   WORKDIR /app
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-   COPY . /app
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-   RUN pip install --upgrade pip && \
-       pip install --no-cache-dir -r requirements.txt
+# Copy the requirements file to the working directory
+COPY requirements.txt .
 
-   EXPOSE 80
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-   CMD ["python", "PUM_main.py"]
+# Copy the rest of the application code to the container
+COPY . .
+
+# Set the command to run your Python application
+CMD ["python", "Rx380_watchdog_1.5.py"]
