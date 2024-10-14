@@ -2,6 +2,13 @@
 Rx380_Data_csv.py
 Rx380_watchdog.py
 rx380_watchdog_v1.1.py
+Rx380_pymssql.py
+Rx380_pyodbc.py
+rx380_testingsql.py
+Rx380_watchdog_1.2.py
+Rx380_watchdog_1.3.py
+Rx380_watchdog_1.4.py
+rx380.py
 
 # Python cache files
 __pycache__/
