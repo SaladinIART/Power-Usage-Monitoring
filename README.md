@@ -55,37 +55,14 @@ If the system fails to read data from the RX380, error messages will be logged i
 Look for messages like "Error reading scaled value from register X" to identify specific issues with the registers.
 Ensure that the serial connection is stable, the correct device configurations are in place, and the Raspberry Pi has the appropriate permissions to access the USB port.
 
-3. Hardware and Software Setup
-Hardware:
-Acer Predator Helios Neo 16 (Windows 11)
-This laptop is the main development environment, where all the programming, debugging, and project management take place. It has been configured with the necessary tools for Python development, SSH, and Docker for containerization.
-Raspberry Pi 5 (Location: Office)
-Operating System: Bookworm OS
-The Raspberry Pi 5 acts as the controller, interfacing with the RX380 via Modbus RTU (through a USB to RS485/422 isolated converter). It is accessed remotely from the development laptop through SSH, allowing for seamless deployment and real-time testing.
-Software and Tools:
-Microsoft Visual Studio Code (VS Code)
+Device physical connection:
 
-SSH Integration: Remotely control and program the Raspberry Pi from VS Code via SSH. This enables easy debugging and execution of Python scripts on the Pi.
-Git & GitHub Integration: Version control is implemented using Git, GitHub Desktop, and the Git extension in VS Code to track changes, collaborate with colleagues, and ensure stable project management.
-Docker Desktop
-
-The current setup is being prepared for deployment in a containerized environment using Docker. This ensures all dependencies and configurations are consistent across different environments, which will be fully implemented in version 1.6.
-LibreOffice
-
-Initially used to save data in both .csv and .ods formats, though .csv has been chosen as the final format for its simplicity and ease of retrieval. LibreOffice may still be used for additional data manipulation if required.
-Codesys IDE
-
-Future versions will integrate Codesys to convert Python code logic into Function Block Diagrams (FBD) and Structured Text (ST) to meet specific industrial requirements.
-Challenges and Solutions:
-File Saving Issues (v1.4)
-
-Early versions encountered system freezes when saving data in .csv and .ods formats simultaneously. This was resolved by sticking to the .csv format only, ensuring smooth performance and ease of access for data logging.
-Library Versioning Problems
-
-Testing on different systems led to issues with library incompatibilities (e.g., due to varying Python versions and dependencies). The solution involves Docker containerization in version 1.6, which will package all necessary dependencies into a single environment.
-Error Logging
-
-The system logs errors into rx380_logger.log, providing details for troubleshooting any failures during communication with the RX380 or other runtime issues.
+RX380 Power Meter:
+Connected to the RS485 converter using a 3-core wire (RS485 communication).
+RS485 to USB Converter:
+Converts the RS485 signal to USB and connects to the Raspberry Pi via the USB port.
+Raspberry Pi 5:
+Receives the data via USB and processes it through Python scripts for data logging.
 
 3. Hardware and Software Setup
 Hardware:
