@@ -8,6 +8,12 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
+# Install build tools
+RUN apt-get update && apt-get install -y \
+    cmake \
+    ninja-build \
+    build-essential
+
 # Copy the requirements file to the working directory
 COPY requirements.txt .
 
