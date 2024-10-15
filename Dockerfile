@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
     ninja-build \
     build-essential
 
+RUN pip install --upgrade pip
+
 # Copy the requirements file to the working directory
 COPY requirements.txt .
 
