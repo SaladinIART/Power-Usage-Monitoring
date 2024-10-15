@@ -26,6 +26,6 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag saltek94/rx380-monitor:latest
 
-    # Step 4: Push the Docker image to Docker Hub
+    # Step 4: Push Docker image to Docker Hub
     - name: Push Docker image
       run: docker push saltek94/rx380-monitor:latest
