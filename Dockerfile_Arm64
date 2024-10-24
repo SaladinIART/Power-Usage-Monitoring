@@ -1,0 +1,38 @@
+# Use ARM64 compatible Python image
+FROM arm64v8/python:3.11-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Install required system dependencies for serial communication
+RUN apt-get update && apt-get install -y \
+    cmake \
+    ninja-build \
+    build-essential \
+    gcc \
+    libc6-dev \
+    udev
+
+# Create requirements.txt
+RUN echo "minimalmodbus==2.1.1\n\
+    pyserial==3.5\n\
+    asyncio==3.4.3" > requirements.txt
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy your Python script
+COPY Rx380_watchdog_1.5.py .
+
+# Create necessary directories
+RUN mkdir -p /root/Desktop/PUA_Office/PUA/rx380_daily_logs
+
+# Add device permissions
+RUN echo 'KERNEL=="ttyUSB[0-9]*",MODE="0666"' > /etc/udev/rules.d/99-serial.rules
+
+# Set the command to run your Python application
+CMD ["python", "Rx380_watchdog_1.5.py"]
