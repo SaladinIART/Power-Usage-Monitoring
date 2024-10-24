@@ -1,5 +1,5 @@
-# Use ARM64 compatible Python image
-FROM arm64v8/python:3.11-slim
+# Use Python slim image with platform specification
+FROM --platform=linux/arm64 python:3.11-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
