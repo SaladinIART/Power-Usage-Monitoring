@@ -162,7 +162,7 @@ def get_filename(extension):
 async def save_to_csv(data, folder_path=None):
     """Save a single data point to a CSV file."""
     if folder_path is None:
-        folder_path = Path.home() / "Desktop" / "PUA_Office" / "PUA" / "rx380_daily_logs"
+        folder_path = Path.home() / "Desktop" / "P7_Oven" / "PUA" / "rx380_daily_logs"
     folder_path = Path(folder_path)
     folder_path.mkdir(parents=True, exist_ok=True)
     
