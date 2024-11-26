@@ -105,7 +105,7 @@ class RX380:
 
 class DataManager:
     """Class to handle data storage in SQL and CSV."""
-    def __init__(self, table_name='dbo.Office_Readings'):
+    def __init__(self, table_name='dbo.P7'):
         self.db_config = {
             'server': '192.168.0.226',
             'database': 'Power_Usage_Alumac',
