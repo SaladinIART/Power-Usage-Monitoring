@@ -1,7 +1,5 @@
-import os
-import time
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 import asyncio
 import minimalmodbus
 import sqlite3
