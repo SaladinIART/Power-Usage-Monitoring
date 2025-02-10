@@ -1,0 +1,21 @@
+{
+    "modbus": {
+      "port": "/dev/ttyUSB0",
+      "slave_address": 1,
+      "baudrate": 19200
+    },
+    "database": {
+      "server": "192.168.0.226",
+      "database": "Power_Usage_Alumac",
+      "user": "sa",
+      "password": "password"
+    },
+    "csv": {
+      "log_folder": "/home/pi/logs"
+    },
+    "logging": {
+      "log_file": "rx380_logger.log",
+      "level": "INFO"
+    }
+  }
+  
