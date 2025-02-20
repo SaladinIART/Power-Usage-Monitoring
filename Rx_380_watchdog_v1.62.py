@@ -83,7 +83,7 @@ class ModbusClient:
         self.instrument.serial.timeout = 1
         self.instrument.mode = minimalmodbus.MODE_RTU
         self.logger.info("Modbus instrument set up.")
-        
+
     async def read_scaled_value(self, register_address, scale_factor):
         try:
             raw_value = await asyncio.to_thread(
@@ -94,8 +94,21 @@ class ModbusClient:
         except Exception as e:
             self.logger.error(f"Error reading register {register_address}: {e}")
             return None
-
-
+        
+    async def read_register(self, register_address, number_of_decimals, signed):
+        """Read a single register value asynchronously."""
+        try:
+            return await asyncio.to_thread(
+                self.instrument.read_register,
+                register_address,
+                number_of_decimals,
+                signed=signed,
+                functioncode=4
+        )
+        except Exception as e:
+            self.logger.error(f"Error reading register {register_address}: {e}")
+            return None
+        
     async def read_data(self):
         """Read all necessary data from RX380."""
         data = {}
